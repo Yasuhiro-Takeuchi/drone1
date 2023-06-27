@@ -48,17 +48,33 @@ void drawPosition() {
   // 人物の位置に円を描く
   colorMode(RGB);                             // 色の指定を RGB 形式にする
   noStroke();                                 // 線は描かない
-  fill(255, 127, 0);                          // 塗りつぶす色の指定 (Red, Green, Blue)
-  ellipse(user.position.x * width, // 円の中心のx座標（userのx座標は0～1で得られる）
-    user.position.y * height, // 円の中心のy座標（userのy座標は0～1で得られる）
-    30, 30);                            // 円の幅, 高さ
+  //fill(255, 127, 0);                          // 塗りつぶす色の指定 (Red, Green, Blue)
+  // 円の幅, 高さ
   // 人物の位置情報をテキストで描く
   textSize(48);                               // 文字サイズの設定
   text("ID:" + user.dwTrackingID    + "/ " +  // userのID
     nf(user.position.x, 1, 2)    + ", " +  // userのx座標（nfで小数第二位まで表示）
     nf(user.position.y, 1, 2)    + ", " +  // userのy座標（nfで小数第二位まで表示）
-    round(user.position.z / 100) + "cm", // userのz座標（距離：x100cmで得られるので100で割り四捨五入）
-    20, 450);                              // 文字列の表示位置 (x, y)
+    round(user.position.z/100) + "cm", // userのz座標（距離：x100cmで得られるので100で割り四捨五入）
+    20, 450);        // 文字列の表示位置 (x, y)
+
+  if (user.position.x < 0.55 && user.position.x > 0.45 ) {
+    fill(255, 0, 0);
+  } else {
+    fill(255, 127, 0);
+  }
+
+
+  if (user.position.z/100 > 100 && user.position.z/100 <110 ) {
+    fill(255, 0, 0);
+  } else {
+    fill(255, 127, 0);
+  }
+
+
+  ellipse(user.position.x * width, // 円の中心のx座標（userのx座標は0～1で得られる）
+    user.position.y * height, // 円の中心のy座標（userのy座標は0～1で得られる）
+    30, 30);
 }
 
 // 関節（骨格）描画する drawPosition 関数
@@ -77,6 +93,13 @@ void drawSkeleton() {
       10, 10);
   }
 
+  if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y) {
+    fill(255, 0, 0);
+    ellipse(user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].x * width,
+      user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].y * height,
+      10, 10);
+  }
+
   //ellipse(user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].x * width,
   //  user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y * height,
   //  //10, 10);
@@ -91,9 +114,9 @@ void drawSkeleton() {
     10, 10);
 
   //test
-  ellipse(user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].x * width,
-    user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].y * height,
-    10, 10);
+  //ellipse(user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].x * width,
+  //  user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].y * height,
+  //  10, 10);
   ellipse(user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_ELBOW_LEFT].x * width,
     user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_ELBOW_LEFT].y * height,
     10, 10);
@@ -146,9 +169,12 @@ void drawSkeleton() {
     user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].x * width,
     user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y * height);
 
-  if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y) {
-    udp.send("takeoff", ip, port);
-  }
+  //if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y) {
+  //  udp.send("takeoff", ip, port);
+  //}
+  //if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].y) {
+  //  udp.send("land", ip, port);
+  //}
 }
 
 void keyPressed() {
