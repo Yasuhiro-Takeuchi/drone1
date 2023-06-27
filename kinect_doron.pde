@@ -58,18 +58,31 @@ void drawPosition() {
     round(user.position.z/100) + "cm", // userのz座標（距離：x100cmで得られるので100で割り四捨五入）
     20, 450);        // 文字列の表示位置 (x, y)
 
-  if (user.position.x < 0.55 && user.position.x > 0.45 ) {
+  //中心に移動
+  //中心にいない場合、中心に誘導するメッセージを表示
+  if (user.position.x < 0.55 && user.position.x > 0.45 && user.position.z/100 > 100 && user.position.z/100 <110 ) {
     fill(255, 0, 0);
-  } else {
+  } else if (user.position.x > 0.55) {
     fill(255, 127, 0);
+    text("LEFT!", 10, 35); // 表示するテキスト, x座標, y座標
+  } else if (user.position.x < 0.45) {
+    fill(255, 127, 0);
+    text("RIGHT!", 10, 35); // 表示するテキスト, x座標, y座標
+  }
+
+  if (user.position.z/100 < 100) {
+    fill(255, 127, 0);
+    text("GO BACK", 10, 70); // 表示するテキスト, x座標, y座標
+  } else if (user.position.z/100 >110) {
+    text("go straight", 10, 70); // 表示するテキスト, x座標, y座標
   }
 
 
-  if (user.position.z/100 > 100 && user.position.z/100 <110 ) {
-    fill(255, 0, 0);
-  } else {
-    fill(255, 127, 0);
-  }
+  //if (user.position.z/100 > 100 && user.position.z/100 <110 ) {
+  //  fill(255, 0, 0);
+  //} else {
+  //  fill(255, 127, 0);
+  //}
 
 
   ellipse(user.position.x * width, // 円の中心のx座標（userのx座標は0～1で得られる）
@@ -169,7 +182,16 @@ void drawSkeleton() {
     user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].x * width,
     user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y * height);
 
-  //if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y) {
+
+  if (user.position.x < 0.55 && user.position.x > 0.45 && user.position.z/100 > 100 && user.position.z/100 <110) {//真ん中に来たらtake off
+    udp.send("takeoff", ip, port);
+  }
+  if (user.position.x > 0.55) {
+    udp.send("right 100", ip, port);//右にいたら右に移動
+  } else if (user.position.x < 0.45) {
+    udp.send("left 100", ip, port);//左にいたら左に移動
+  }
+  //if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y) {//腕をあげたらtake off
   //  udp.send("takeoff", ip, port);
   //}
   //if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_LEFT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_LEFT].y) {
