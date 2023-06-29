@@ -1,4 +1,3 @@
-a
 import kinect4WinSDK.*;
 import hypermedia.net.*;// kinect4WinSDK ライブラリを使う
 
