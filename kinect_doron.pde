@@ -189,7 +189,7 @@ void drawSkeleton() {
   if (user.position.x > 0.55) {
     udp.send("right 100", ip, port);//右にいたら右に移動
   } else if (user.position.x < 0.45) {
-    udp.send("left 100", ip, port);//左にいたら左に移動
+    udp.send("left 100", ip, port);//左にいたら左に移動左が反応しない
   }
   //if (user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_SHOULDER_RIGHT].y > user.skeletonPositions[Kinect.NUI_SKELETON_POSITION_HAND_RIGHT].y) {//腕をあげたらtake off
   //  udp.send("takeoff", ip, port);
